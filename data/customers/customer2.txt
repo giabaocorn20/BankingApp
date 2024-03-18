@@ -1,0 +1,4 @@
+Username: customer2
+Password: customer2
+Balance: 100.0
+Level: Silver
