@@ -7,8 +7,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * This class represents a manager in the banking application.
- * It extends the AbstractUser class and includes additional properties and methods specific to a manager.
+ * Overview: Manager is a mutable class that represents a manager in the banking application.
+ * A Manager has a list of customers and can add or remove customers.
+ *
+ * Abstraction Function:
+ * Represents a manager in the banking application as a Manager object where the list of customers is represented by the 'customers' field.
+
+ * Representation Invariant:
+ * The 'customers' field must always be non-null (customers != null).
  */
 public class Manager extends AbstractUser {
     // The FileManager instance for handling file operations related to the manager
@@ -25,6 +31,9 @@ public class Manager extends AbstractUser {
      *
      * @param username the username of the manager
      * @param password the password of the manager
+     * @requires username != null && password != null
+     * @modifies this
+     * @effects creates a new Manager object with the specified username and password, writes the manager's details to a file, and loads all customers from the customer directory
      */
     public Manager(String username, String password) {
         super(username, password);
@@ -52,6 +61,9 @@ public class Manager extends AbstractUser {
      * It also writes the customer's details to a file.
      *
      * @param customer the customer to add
+     * @requires customer != null
+     * @modifies this
+     * @effects adds a new customer to the list of customers and writes the customer's details to a file
      */
     public void addCustomer(Customer customer) {
         customers.add(customer);
@@ -67,6 +79,9 @@ public class Manager extends AbstractUser {
      * It also deletes the file containing the customer's details.
      *
      * @param usernameToRemove the username of the customer to remove
+     * @requires usernameToRemove != null
+     * @modifies this
+     * @effects removes the customer with the specified username from the list of customers and deletes the file containing the customer's details
      */
     public void removeCustomer(String usernameToRemove) {
         for (Customer customer : customers) {
@@ -81,6 +96,8 @@ public class Manager extends AbstractUser {
      * Returns the customer with the specified username.
      *
      * @param username the username of the customer
+     * @requires username != null
+     * @effects returns the customer with the specified username, or null if no such customer exists
      * @return the customer with the specified username, or null if no such customer exists
      */
     public Customer getCustomer(String username) {
@@ -90,5 +107,24 @@ public class Manager extends AbstractUser {
             }
         }
         return null;
+    }
+    /**
+     * Returns a string representation of the Manager.
+     *
+     * @return a string representation of the Manager
+     * @effects returns a string that represents the Manager
+     */
+    @Override
+    public String toString() {
+        return "Manager with " + customers.size() + " customers.";
+    }
+    /**
+     * Checks if the 'customers' field is non-null.
+     *
+     * @return true if the 'customers' field is non-null, false otherwise
+     * @effects returns a boolean indicating if the 'customers' field is non-null
+     */
+    public boolean repOk() {
+        return customers != null;
     }
 }

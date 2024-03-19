@@ -6,8 +6,15 @@ import coe528.bankingapp.templates.AbstractUser;
 import java.util.logging.Logger;
 
 /**
- * This class represents a customer in the banking application.
- * It extends the AbstractUser class and includes additional properties and methods specific to a customer.
+ * Overview: Customer is a mutable class that represents a customer in the banking application.
+ * A Customer has a username, password, account with a balance, and a customer level.
+
+ * Abstraction Function:
+ * Represents a customer in the banking application as a Customer object where the username, password, account balance, and customer level are represented by the respective fields.
+
+ * Representation Invariant:
+ * The 'account' field must always be non-negative (account.getBalance() >= 0).
+ * The 'customerLevel' field must not be null (customerLevel != null).
  */
 public class Customer extends AbstractUser {
     // The role of the user
@@ -49,11 +56,12 @@ public class Customer extends AbstractUser {
 
     /**
      * Deposits the specified amount into the customer's account.
-     * If the amount is negative, an IllegalArgumentException is thrown.
-     * After the deposit, the customer data is written to a file.
      *
      * @param amount the amount to deposit
      * @throws IllegalArgumentException if the amount is negative
+     * @requires amount >= 0
+     * @modifies this
+     * @effects updates the balance of the account by adding the specified amount
      */
     public void deposit(double amount) {
         if (amount < 0) {
@@ -68,12 +76,13 @@ public class Customer extends AbstractUser {
 
     /**
      * Withdraws the specified amount from the customer's account.
-     * If the amount is negative or if the withdrawal would result in a negative balance, an exception is thrown.
-     * After the withdrawal, the customer data is written to a file.
      *
      * @param amount the amount to withdraw
      * @throws IllegalArgumentException if the amount is negative
      * @throws IllegalStateException if the withdrawal would result in a negative balance
+     * @requires amount > 0 and account.getBalance() - amount - customerLevel.getFee() >= 0
+     * @modifies this
+     * @effects updates the balance of the account by subtracting the specified amount
      */
     public void withdraw(double amount) {
         if (amount <= 0) {
@@ -129,25 +138,6 @@ public class Customer extends AbstractUser {
     }
 
     /**
-     * Checks if the customer's account balance is non-negative and the customer's level is not null.
-     *
-     * @return true if the customer's account balance is non-negative and the customer's level is not null, false otherwise
-     */
-    public boolean repOk() {
-        return account.repOk() && customerLevel.getFee() >= 0 && customerLevel.getLevel() != null;
-    }
-
-    /**
-     * Returns a string representation of the customer.
-     *
-     * @return a string representation of the customer
-     */
-    @Override
-    public String toString() {
-        return "Username: " + getUsername() + ", Customer Number: " + customerNumber + ", Balance: $" + account.getBalance();
-    }
-
-    /**
      * Returns the password of the customer.
      *
      * @return the password of the customer
@@ -155,4 +145,27 @@ public class Customer extends AbstractUser {
     public String getPassword() {
         return password;
     }
+
+    /**
+     * Checks if the customer's account balance is non-negative and the customer's level is not null.
+     *
+     * @return true if the customer's account balance is non-negative and the customer's level is not null, false otherwise
+     * @effects returns a boolean indicating if the customer's account balance is non-negative and the customer's level is not null
+     */
+
+    public boolean repOk() {
+        return account.repOk() && customerLevel.getFee() >= 0 && customerLevel.getLevel() != null;
+    }
+
+    /**
+     * Checks if the customer's account balance is non-negative and the customer's level is not null.
+     *
+     * @return true if the customer's account balance is non-negative and the customer's level is not null, false otherwise
+     * @effects returns a boolean indicating if the customer's account balance is non-negative and the customer's level is not null
+     */
+    @Override
+    public String toString() {
+        return "Username: " + getUsername() + ", Customer Number: " + customerNumber + ", Balance: $" + account.getBalance();
+    }
+
 }

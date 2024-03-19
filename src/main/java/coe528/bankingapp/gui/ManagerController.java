@@ -17,8 +17,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This class is the controller for the Manager GUI.
- * It handles all the interactions between the Manager GUI and the Manager model.
+ * This class represents the controller for the Manager in the banking application.
+ * It includes properties and methods for handling manager actions such as adding and deleting customers.
+ * This class is mutable as it allows changing the state of the application based on the manager's actions.
+
+ * Abstraction Function:
+ * A ManagerController is represented by a manager who can add and delete customers, which are used for managing the banking application.
+
+ * Representation Invariant:
+ * The 'manager' field must be non-null.
  */
 public class ManagerController {
     // The manager of the banking application
@@ -46,16 +53,9 @@ public class ManagerController {
     public ManagerController() {}
 
     /**
-     * Sets the manager for this controller.
-     * @param manager The manager to be set.
-     */
-    public static void setManager(Manager manager) {
-        ManagerController.manager = manager;
-    }
-
-    /**
      * Initializes the Manager GUI.
-     * This method is called after all @FXML annotated members have been injected.
+     *
+     * @effects sets up the customer table and refreshes the customer list
      */
     @FXML
     public void initialize() {
@@ -82,7 +82,22 @@ public class ManagerController {
     }
 
     /**
+     * Sets the manager for this controller.
+     *
+     * @param manager The manager to be set
+     * @modifies this
+     * @effects sets the manager of the controller to the specified manager
+     */
+    public static void setManager(Manager manager) {
+        ManagerController.manager = manager;
+    }
+
+
+    /**
      * Refreshes the list of customers in the Manager GUI.
+     *
+     * @modifies this
+     * @effects updates the list of customers in the Manager GUI
      */
     @FXML
     public void refreshCustomerList() {
@@ -108,7 +123,10 @@ public class ManagerController {
 
     /**
      * Handles the event when the "Add Customer" button is clicked.
-     * This method opens a dialog for the manager to enter the new customer's information.
+     *
+     * @throws IOException if the view cannot be switched
+     * @modifies this
+     * @effects opens a dialog for the manager to enter the new customer's information
      */
     public void handleAddCustomerButtonClick() throws IOException {
         AddNewCustomerController.setManager(manager); // Set the manager for the add customer controller
@@ -117,7 +135,10 @@ public class ManagerController {
 
     /**
      * Deletes a customer from the manager's list of customers.
-     * @param customer The customer to be deleted.
+     *
+     * @param customer the customer to be deleted
+     * @modifies this
+     * @effects removes the customer from the manager's list of customers and refreshes the customer list
      */
     private void deleteCustomer(Customer customer) {
         manager.removeCustomer(customer.getUsername()); // Remove the customer from the manager's list of customers
@@ -126,11 +147,34 @@ public class ManagerController {
 
     /**
      * Handles the event when the "Logout" button is clicked.
-     * This method logs out the manager and returns to the login screen.
-     * @throws IOException If an input or output exception occurred.
+     *
+     * @throws IOException if the view cannot be switched
+     * @modifies this
+     * @effects logs out the manager and switches the view to the login view
      */
     public void handleLogoutButtonClick() throws IOException {
         manager.logout(); // Log out the manager
         App.setRoot("login"); // Set the root to the login view
+    }
+
+    /**
+     * Returns a string representation of the ManagerController.
+     *
+     * @effects returns a string that represents the ManagerController
+     * @return a string representation of the ManagerController
+     */
+    @Override
+    public String toString() {
+        return "ManagerController with manager: " + manager.getUsername();
+    }
+
+    /**
+     * Checks the representation invariant of the ManagerController.
+     *
+     * @return true if the 'manager' field is non-null, false otherwise
+     * @effects returns a boolean indicating if the 'manager' field is non-null
+     */
+    public boolean repOk() {
+        return manager != null;
     }
 }

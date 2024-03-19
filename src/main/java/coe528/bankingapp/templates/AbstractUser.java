@@ -53,6 +53,9 @@ public abstract class AbstractUser implements User{
     /**
      * Logs out the user.
      * The user's login status is set to false and a message is printed to the console.
+     *
+     * @modifies this
+     * @effects sets the user's login status to false, prints a message to the console
      */
     @Override
     public void logout() {
@@ -63,6 +66,7 @@ public abstract class AbstractUser implements User{
     /**
      * Returns the login status of the user.
      *
+     * @effects returns the login status of the user
      * @return the login status of the user
      */
     public boolean isLoggedIn() {
@@ -72,9 +76,30 @@ public abstract class AbstractUser implements User{
     /**
      * Returns the username of the user.
      *
+     * @effects returns the username of the user
      * @return the username of the user
      */
     public String getUsername() {
         return username;
+    }
+    /**
+     * Returns a string representation of the AbstractUser.
+     *
+     * @return a string representation of the AbstractUser
+     * @effects returns a string that represents the AbstractUser
+     */
+    @Override
+    public String toString() {
+        return "AbstractUser with username: " + username + ", password: " + password + ", login status: " + isLoggedin;
+    }
+
+    /**
+     * Checks if the 'username' and 'password' fields are non-null.
+     *
+     * @return true if the 'username' and 'password' fields are non-null, false otherwise
+     * @effects returns a boolean indicating if the 'username' and 'password' fields are non-null
+     */
+    public boolean repOk() {
+        return username != null && password != null;
     }
 }

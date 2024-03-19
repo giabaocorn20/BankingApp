@@ -13,6 +13,13 @@ import java.util.List;
 /**
  * This class is the controller for the authentication view of the banking application.
  * It handles the login functionality for both customers and the manager.
+ * This class is mutable as it allows changing the state of the application based on the login credentials.\
+
+ * Abstraction Function:
+ * An AuthenticateController is represented by a usernameField and passwordField which are used for user authentication.
+
+ * Representation Invariant:
+ * The usernameField and passwordField must be non-null.
  */
 public class AuthenticateController {
     // The manager of the banking application
@@ -46,7 +53,10 @@ public class AuthenticateController {
      * Handles the login button click event.
      * It checks if the entered username and password match a customer or the manager.
      * If a match is found, it switches to the corresponding view.
+     *
      * @throws IOException if there is an error switching views
+     * @modifies this
+     * @effects changes the state of the application based on the login credentials
      */
     public void handleLoginButtonClick() throws IOException {
         String username = usernameField.getText(); // Get the username from the username field
@@ -87,7 +97,10 @@ public class AuthenticateController {
 
     /**
      * Switches the view to the manager view.
+     *
      * @throws IOException if there is an error switching views
+     * @modifies this
+     * @effects changes the view of the application to the manager view
      */
     public void switchToManagerView() throws IOException {
         ManagerController.setManager(manager); // Set the manager
@@ -96,9 +109,33 @@ public class AuthenticateController {
 
     /**
      * Switches the view to the customer view.
+     *
      * @throws IOException if there is an error switching views
+     * @modifies this
+     * @effects changes the view of the application to the customer view
      */
     public void switchToCustomerView() throws IOException {
         App.setRoot("customerView"); // Switch to the customer view
+    }
+
+    /**
+     * Returns a string representation of the AuthenticateController.
+     *
+     * @effects returns a string that represents the AuthenticateController
+     * @return a string representation of the AuthenticateController
+     */
+    @Override
+    public String toString() {
+        return "AuthenticateController with usernameField: " + usernameField.getText() + ", passwordField: " + passwordField.getText();
+    }
+
+    /**
+     * Checks the representation invariant of the AuthenticateController.
+     *
+     * @return true if the 'usernameField' and 'passwordField' fields are non-null, false otherwise
+     * @effects returns a boolean indicating if the 'usernameField' and 'passwordField' fields are non-null
+     */
+    public boolean repOk() {
+        return usernameField != null && passwordField != null;
     }
 }
