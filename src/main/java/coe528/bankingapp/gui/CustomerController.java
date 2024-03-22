@@ -110,6 +110,20 @@ public class CustomerController {
     }
 
     /**
+     * Handles the purchase button click event.
+     *
+     * @requires amountField to contain a valid double value
+     * @modifies this
+     * @effects purchase with the amount entered in the amount field from the customer's account and updates the customer information
+     */
+    @FXML
+    public void handlePurchaseButtonClick() {
+        double amount = Double.parseDouble(amountField.getText()); // Get the amount from the amount field
+        customer.purchase(amount); // Withdraw the amount
+        updateCustomerInfo();
+    }
+
+    /**
      * Handles the logout button click event.
      *
      * @throws IOException if the view cannot be switched

@@ -13,6 +13,7 @@
     <TextField fx:id="amountField" layoutX="14" layoutY="92" prefWidth="200" />
     <Button fx:id="depositButton" layoutX="14" layoutY="122" mnemonicParsing="false" onAction="#handleDepositButtonClick" text="Deposit" />
     <Button fx:id="withdrawButton" layoutX="108.0" layoutY="122.0" mnemonicParsing="false" onAction="#handleWithdrawButtonClick" text="Withdraw" />
-   <Button fx:id="logoutButton" layoutX="222.0" layoutY="122.0" mnemonicParsing="false" onAction="#handleLogoutButtonClick" text="Logout" />
+    <Button fx:id="purchaseButton" layoutX="201.0" layoutY="122.0" mnemonicParsing="false" onAction="#handlePurchaseButtonClick" text="Purchase" />
+   <Button fx:id="logoutButton" layoutX="300.0" layoutY="122.0" mnemonicParsing="false" onAction="#handleLogoutButtonClick" text="Logout" />
 
 </AnchorPane>

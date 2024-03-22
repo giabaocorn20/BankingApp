@@ -88,7 +88,7 @@ public class Customer extends AbstractUser {
         if (amount <= 0) {
             throw new IllegalArgumentException("Amount must be positive");
         }
-        else if (account.getBalance() - amount - customerLevel.getFee() < 0) {
+        else if (account.getBalance() - amount < 0) {
             throw new IllegalStateException("Insufficient funds");
         }
         else{
@@ -103,6 +103,34 @@ public class Customer extends AbstractUser {
         }
     }
 
+    /**
+     * Purchases an item with the specified amount from the customer's account.
+     *
+     * @param amount the amount to withdraw
+     * @throws IllegalArgumentException if the amount is negative
+     * @throws IllegalStateException if the purchase would result in a negative balance
+     * @requires amount > 0 and account.getBalance() - amount - customerLevel.getFee() >= 0
+     * @modifies this
+     * @effects updates the balance of the account by subtracting the specified amount and the fee
+     */
+    public void purchase(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        else if (account.getBalance() - amount - customerLevel.getFee() < 0) {
+            throw new IllegalStateException("Insufficient funds");
+        }
+        else{
+            account.setBalance(account.getBalance() - amount - customerLevel.getFee());
+            String customerData = "Username: " + getUsername() + "\n" +
+                    "Password: " + getPassword() + "\n" +
+                    "Balance: " + getBalance() + "\n" +
+                    "Level: " + customerLevel.getLevel()+ "\n" +
+                    "Customer Number: " + customerNumber + "\n" +
+                    "Role: " + ROLE;
+            fileManager.writeToFile(getUsername() + ".txt", customerData);
+        }
+    }
     /**
      * Returns the level of the customer.
      *
