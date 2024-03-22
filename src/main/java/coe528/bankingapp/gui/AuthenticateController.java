@@ -4,7 +4,7 @@ import coe528.bankingapp.customer.Customer;
 import coe528.bankingapp.manager.Manager;
 import coe528.bankingapp.data.FileManager;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -34,10 +34,11 @@ public class AuthenticateController {
     // The TextField for the password input in the authentication view.
     @FXML
     private TextField passwordField;
+    // The label field for displaying login errors
+    @FXML
+    private Label loginErrorLabel;
 
-    /**
-     * Static initializer block to initialize the manager and fileManager objects.
-     */
+
     static {
         manager = new Manager("admin", "admin"); // Create a new manager with the default username and password
         fileManager = new FileManager(); // Create a new FileManager
@@ -59,6 +60,8 @@ public class AuthenticateController {
      * @effects changes the state of the application based on the login credentials
      */
     public void handleLoginButtonClick() throws IOException {
+        loginErrorLabel.setText(""); // Clear any previous error messages
+
         String username = usernameField.getText(); // Get the username from the username field
         String password = passwordField.getText(); // Get the password from the password field
 
@@ -70,6 +73,10 @@ public class AuthenticateController {
                 switchToManagerView();  // Switch to the manager view
                 return;
             }
+        }
+        // If the manager is not logged in
+        if (!manager.isLoggedIn()) {
+            loginErrorLabel.setText("Unable to log in. Please check your username and password.");
         }
 
         // Get all the customer files
@@ -89,6 +96,11 @@ public class AuthenticateController {
                 if (customer.isLoggedIn()) { // If the customer is logged in
                     CustomerController.setCustomer(customer); // Set the customer
                     switchToCustomerView(); // Switch to the customer view
+                    return;
+                }
+                // If the customer is not logged in
+                if (!customer.isLoggedIn()) {
+                    loginErrorLabel.setText("Unable to log in. Please check your username and password.");
                     return;
                 }
             }

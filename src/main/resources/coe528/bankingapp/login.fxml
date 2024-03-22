@@ -8,6 +8,7 @@
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.Label?>
 <AnchorPane prefHeight="271.0" prefWidth="458.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="coe528.bankingapp.gui.AuthenticateController">
     <VBox layoutX="247.0" layoutY="70.0" spacing="10">
         <TextField fx:id="usernameField" promptText="Username" />
@@ -19,5 +20,6 @@
           <Text text="Login" />
       </children>
     </TextFlow>
+    <Label fx:id="loginErrorLabel" text="" style="-fx-text-fill: red;" />
 
 </AnchorPane>

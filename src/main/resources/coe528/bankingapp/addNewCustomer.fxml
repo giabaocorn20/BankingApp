@@ -22,8 +22,9 @@
 
     <Label text="Deposit:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
     <TextField fx:id="balanceField" promptText="Balance" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-    <Button fx:id="addButton" onAction="#handleAddButton" text="Add" GridPane.rowIndex="3" />
-    <Button fx:id="cancelButton" onAction="#handleCancelButton" text="Cancel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <Label fx:id="errorMessage" text="" style="-fx-text-fill: red;" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2" />
+    <Button fx:id="addButton" onAction="#handleAddButton" text="Add" GridPane.rowIndex="4" />
+    <Button fx:id="cancelButton" onAction="#handleCancelButton" text="Cancel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />

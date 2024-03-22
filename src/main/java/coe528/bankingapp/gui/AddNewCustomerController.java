@@ -3,6 +3,7 @@ package coe528.bankingapp.gui;
 import coe528.bankingapp.customer.Customer;
 import coe528.bankingapp.manager.Manager;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -36,6 +37,9 @@ public class AddNewCustomerController {
 
     // Manager instance to handle the business logic
     private static Manager manager;
+    // Label field for error messages
+    @FXML
+    private Label errorMessage;
 
     /**
      * Default constructor
@@ -75,7 +79,11 @@ public class AddNewCustomerController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         double balance = Double.parseDouble(balanceField.getText());
-
+        // Check if the username already exists
+        if (manager.getCustomer(username) != null) {
+            errorMessage.setText("Username already exists. Please choose a different username.");
+            return;
+        }
         // Add the new customer to the database
         try {
             Customer newCustomer = new Customer(username, password, balance);

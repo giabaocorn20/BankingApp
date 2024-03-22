@@ -95,7 +95,7 @@ public class ManagerController {
 
     /**
      * Refreshes the list of customers in the Manager GUI.
-     *
+     * Idea: https://stackoverflow.com/questions/37559584/how-to-add-dynamic-columns-and-rows-to-tableview-in-java-fxml
      * @modifies this
      * @effects updates the list of customers in the Manager GUI
      */
