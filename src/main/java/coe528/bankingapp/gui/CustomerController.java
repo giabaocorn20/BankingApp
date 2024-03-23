@@ -94,8 +94,13 @@ public class CustomerController {
     @FXML
     public void handleDepositButtonClick() {
         double amount = Double.parseDouble(amountField.getText()); // Get the amount from the amount field
-        customer.deposit(amount); // Deposit the amount
-        updateCustomerInfo();
+        if (amount <= 0) {
+            errorLabel.setText("Deposit must be positive.");
+        } else {
+            customer.deposit(amount); // Deposit the amount
+            updateCustomerInfo();
+            errorLabel.setText(""); // Clear the error message
+        }
     }
 
 
