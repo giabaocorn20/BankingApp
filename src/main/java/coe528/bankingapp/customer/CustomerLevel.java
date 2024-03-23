@@ -1,33 +1,28 @@
 package coe528.bankingapp.customer;
 
 /**
- * Overview: CustomerLevel is a mutable class that represents the level of a customer in the banking application.
- * A CustomerLevel has a level, fee, and is associated with a customer's account.
-
- * Abstraction Function:
- * Represents the level of a customer in the banking application as a CustomerLevel object where the level, fee, and account are represented by the respective fields.
-
- * Representation Invariant:
- * The 'account' field must always be non-negative (account.getBalance() >= 0).
- * The 'level' field must not be null (level != null).
- * The 'fee' field must always be non-negative (fee >= 0).
+ * Overview: The CustomerLevel class is a mutable class that represents the level of a customer in a banking application.
+ * The level is determined by the balance in the customer's account. The level can be one of three types: Silver, Gold, or Platinum.
+ * Each level has a different fee associated with it. The state pattern is used to encapsulate the behavior associated with each level.
+ *
+ * The abstraction function is:
+ * AF(c) = a customer level where c.state represents the current level and fee of the customer, and c.account represents the account associated with this customer level
+ *
+ * The rep invariant is:
+ * RI(c) = c.account != null && c.state != null && c.state.getFee() >= 0
  */
 public class CustomerLevel {
-    // The level of the customer
-    private String level;
-    // The fee of the customer
-    private double fee;
-    // The account of the customer
-    private final Account account;
+    private CustomerLevelState state;  // The current state of the customer level
+    private final Account account;  // The account associated with this customer level
 
     /**
-     * Constructs a new CustomerLevel with the specified account.
-     * It also determines the level and fee of the customer based on their account balance.
+     * Constructs a new CustomerLevel object.
+     * The initial state is determined based on the balance in the account.
      *
-     * @param account the account of the customer
-     * @requires account != null
+     * @param account The account associated with this customer level
+     * @effects Initializes this with a new CustomerLevel object
      * @modifies this
-     * @effects creates a new CustomerLevel object with the specified account
+     * @requires account != null
      */
     public CustomerLevel(Account account) {
         this.account = account;
@@ -35,64 +30,67 @@ public class CustomerLevel {
     }
 
     /**
-     * Determines the level and fee of the customer based on their account balance.
+     * Determines the level and fee based on the balance in the account.
+     * If the balance is less than 10,000, the level is Silver and the fee is 20.
+     * If the balance is between 10,000 and 20,000, the level is Gold and the fee is 10.
+     * If the balance is greater than or equal to 20,000, the level is Platinum and the fee is 0.
      *
+     * @effects Sets the state of this based on the balance in the account
      * @modifies this
-     * @effects updates the level and fee of the customer based on their account balance
      */
     private void determineLevelAndFee() {
         if (account.getBalance() < 10000) {
-            level = "Silver";
-            fee = 20;
+            state = new SilverLevelState();
         } else if (account.getBalance() >= 10000 && account.getBalance() < 20000) {
-            level = "Gold";
-            fee = 10;
+            state = new GoldLevelState();
         } else if (account.getBalance() >= 20000) {
-            level = "Platinum";
-            fee = 0;
+            state = new PlatinumLevelState();
         }
     }
 
     /**
      * Returns the level of the customer.
-     * It also determines the level and fee of the customer based on their account balance before returning the level.
+     * The level is determined by the current state.
      *
-     * @return the level of the customer
-     * @effects returns the level of the customer
+     * @return The level of the customer
+     * @effects Returns the level of the customer
      */
     public String getLevel() {
         determineLevelAndFee();
-        return level;
+        return state.getLevel();
     }
 
     /**
-     * Returns the fee of the customer.
+     * Returns the fee associated with the customer's level.
+     * The fee is determined by the current state.
      *
-     * @return the fee of the customer
-     * @effects returns the fee of the customer
+     * @return The fee associated with the customer's level
+     * @effects Returns the fee associated with the customer's level
      */
     public double getFee() {
-        return fee;
+        return state.getFee();
     }
 
     /**
      * Returns a string representation of the customer level.
+     * The string includes the level and the fee.
      *
-     * @return a string representation of the customer level
-     * @effects returns a string that represents the customer level
+     * @return A string representation of the customer level
+     * @effects Returns a string that represents the customer level
      */
     @Override
     public String toString() {
-        return "Customer Level: " + level + ", Fee: $" + fee;
+        return "Customer Level: " + getLevel() + ", Fee: $" + getFee();
     }
 
     /**
-     * Checks if the customer's account balance is non-negative, the level is not null, and the fee is non-negative.
+     * Checks the integrity of the CustomerLevel object.
+     * The object is considered valid if the account is valid, the state is not null, and the fee is non-negative.
      *
-     * @return true if the customer's account balance is non-negative, the level is not null, and the fee is non-negative, false otherwise
-     * @effects returns a boolean indicating if the customer's account balance is non-negative, the level is not null, and the fee is non-negative
+     * @return true if the object is valid, false otherwise
+     * @effects Returns true if the rep invariant holds for this; otherwise returns false
      */
     public boolean repOk() {
-        return account.repOk() && level != null && fee >= 0;
+        return account.repOk() && state != null && getFee() >= 0;
     }
 }
