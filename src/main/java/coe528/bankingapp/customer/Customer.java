@@ -31,7 +31,6 @@ public class Customer extends AbstractUser {
     // The file manager instance
     FileManager fileManager;
     // Logger instance
-    private static final Logger LOGGER = Logger.getLogger(Customer.class.getName());
 
     /**
      * Constructs a new Customer with the specified username, password, and initial amount.
@@ -45,7 +44,6 @@ public class Customer extends AbstractUser {
         super(username, password);
         account = new Account(initialAmount);
         if(!account.repOk()) {
-            LOGGER.warning("Initial amount must be non-negative");
             account.setBalance(0);
         }
         customerLevel = new CustomerLevel(account);
