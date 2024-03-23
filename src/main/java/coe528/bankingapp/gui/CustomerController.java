@@ -36,6 +36,10 @@ public class CustomerController {
     @FXML
     private TextField amountField;
 
+    // The label for displaying errors
+    @FXML
+    private Label errorLabel;
+
     // The customer of the banking application
     private static Customer customer;
 
@@ -105,8 +109,13 @@ public class CustomerController {
     @FXML
     public void handleWithdrawButtonClick() {
         double amount = Double.parseDouble(amountField.getText()); // Get the amount from the amount field
-        customer.withdraw(amount); // Withdraw the amount
-        updateCustomerInfo();
+        if (amount > customer.getBalance()) {
+            errorLabel.setText("Insufficient funds for withdrawal.");
+        } else {
+            customer.withdraw(amount);
+            updateCustomerInfo();
+            errorLabel.setText("");
+        }
     }
 
     /**
@@ -119,8 +128,13 @@ public class CustomerController {
     @FXML
     public void handlePurchaseButtonClick() {
         double amount = Double.parseDouble(amountField.getText()); // Get the amount from the amount field
-        customer.purchase(amount); // Withdraw the amount
-        updateCustomerInfo();
+        if (amount > customer.getBalance()) {
+            errorLabel.setText("Insufficient funds for purchase.");
+        } else {
+            customer.purchase(amount);
+            updateCustomerInfo();
+            errorLabel.setText("");
+        }
     }
 
     /**

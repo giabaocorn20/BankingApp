@@ -1,6 +1,6 @@
 Username: customer1
 Password: customer1
-Balance: 1050.0
+Balance: 520.0
 Level: Silver
 Customer Number: 0
 Role: Customer
